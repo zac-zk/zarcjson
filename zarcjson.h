@@ -49,11 +49,9 @@ private:
     static ParserPtr parser_;
 
 private:
-    void ParseWhitespace(Context& c);
-    Result ParseNull(Context& c, Value& v);
     Result ParseValue(Context& c, Value& v);
-    Result ParseTrue(Context& c, Value& v);
-    Result ParseFalse(Context& c, Value& v);
+    void ParseWhitespace(Context& c);
+    Result ParseLiteral(Context& c, Value& v, const char* s, Type type);
 };
 
 }

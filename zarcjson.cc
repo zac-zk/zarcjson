@@ -36,9 +36,9 @@ Result Parser::Parse(Value& v, const char* json) {
 
 Result Parser::ParseValue(Context& c, Value& v) {
 	switch (*c.json) {
-		case 'n': return ParseNull(c, v);
-		case 't': return ParseTrue(c, v);
-		case 'f': return ParseFalse(c, v);
+		case 'n': return ParseLiteral(c, v, "null", kNull);
+		case 't': return ParseLiteral(c, v, "true", kTrue);
+		case 'f': return ParseLiteral(c, v, "false", kFalse);
 		case '\0': return kParseExpectValue;
 		default: return kParseInvalidValue;
 	}
@@ -56,32 +56,16 @@ void Parser::ParseWhitespace(Context& c) {
 	c.json = p;
 }
 
-Result Parser::ParseNull(Context& c, Value& v) {
-	Expect(c, 'n');
-	if(c.json[0] != 'u' || c.json[1] != 'l' || c.json[2] != 'l')
-		return kParseInvalidValue;
-	c.json += 3;
-	v.type = kNull;
-	return kParseOk;
+Result Parser::ParseLiteral(Context& c, Value& v, const char* s, Type type) {
+    size_t i;
+    Expect(c, s[0]);
+    for(i = 0;s[i+1]!='\0';i++) {
+        if(c.json[i] != s[i+1])
+            return kParseInvalidValue;
+    }
+    c.json += i;
+    v.type = type;
+    return kParseOk;
 }
-
-Result Parser::ParseTrue(Context& c, Value& v) {
-	Expect(c, 't');
-	if(c.json[0] != 'r' || c.json[1] != 'u' || c.json[2] != 'e')
-		return kParseInvalidValue;
-	c.json += 3;
-	v.type = kTrue;
-	return kParseOk;
-}
-
-Result Parser::ParseFalse(Context& c, Value& v) {
-	Expect(c, 'f');
-	if(c.json[0] != 'a' || c.json[1] != 'l' || c.json[2] != 's' || c.json[3] != 'e')
-		return kParseInvalidValue;
-	c.json += 4;
-	v.type = kFalse;
-	return kParseOk;
-}
-
 
 }
