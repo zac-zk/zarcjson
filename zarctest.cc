@@ -14,27 +14,15 @@ TEST(SingletonTest, BasicTest) {
 }
 
 TEST(ParseNullTest, BasicTest) {
-	zarcjson::Value v;
-	v.type = zarcjson::Type::kTrue;
-	zarcjson::Parser::ParserPtr parser = zarcjson::Parser::get_instance();
-	EXPECT_EQ(zarcjson::Result::kParseOk, parser->Parse(v, "null"));
-	EXPECT_EQ(zarcjson::Type::kNull, parser->get_type(v));
+	TestEQ(zarcjson::Type::kNull, zarcjson::Result::kParseOk, "null");
 }
 
 TEST(ParseTrueTest, BasicTest) {
-	zarcjson::Value v;
-	v.type = zarcjson::Type::kNull;
-	zarcjson::Parser::ParserPtr parser = zarcjson::Parser::get_instance();
-	EXPECT_EQ(zarcjson::Result::kParseOk, parser->Parse(v, "true"));
-	EXPECT_EQ(zarcjson::Type::kTrue, parser->get_type(v));
+	TestEQ(zarcjson::Type::kTrue, zarcjson::Result::kParseOk, "true");
 }
 
 TEST(ParseFalseTest, BasicTest) {
-	zarcjson::Value v;
-	v.type = zarcjson::Type::kTrue;
-	zarcjson::Parser::ParserPtr parser = zarcjson::Parser::get_instance();
-	EXPECT_EQ(zarcjson::Result::kParseOk, parser->Parse(v, "false"));
-	EXPECT_EQ(zarcjson::Type::kFalse, parser->get_type(v));
+	TestEQ(zarcjson::Type::kFalse, zarcjson::Result::kParseOk, "false");
 }
 
 TEST(ParseInvalidValueTest, BasicTest) {
