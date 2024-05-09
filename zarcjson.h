@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <memory>
 
 namespace zarcjson {
@@ -20,10 +19,12 @@ enum Result {
     kParseExpectValue,
     kParseInvalidValue,
     kParseRootNotSigular,
+    kParseNumberTooBig,
 };
 
 
 struct Value {
+    double n;
     Type type;
 };
 
@@ -43,6 +44,7 @@ public:
 public:
     Type get_type(const Value& v);
     Result Parse(Value& v, const char* json);
+    double get_number(const Value& v);
 
 private:
     Parser();
@@ -52,6 +54,7 @@ private:
     Result ParseValue(Context& c, Value& v);
     void ParseWhitespace(Context& c);
     Result ParseLiteral(Context& c, Value& v, const char* s, Type type);
+    Result ParseNumber(Context& c, Value& v);
 };
 
 }
